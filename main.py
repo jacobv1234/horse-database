@@ -16,16 +16,17 @@ Select one:
 1) View all of the information about a horse given its name
 2) As 1, but by microchip number
 3) Add/edit a horse's additional information
-4) Change the location of a horse
-5) Change a horse's dental due date
-6) Move a horse to dead_horses.csv
-7) Exit
+4) Get all horses in a given location
+5) Change the location of a horse
+6) Change a horse's dental due date
+7) Move a horse to dead_horses.csv
+8) Exit
 ---------------------------
 Enter the number of your choice below''')
     while True:
         choice = input('>>> ')
         try:
-            if int(choice) >= 1 and int(choice) <= 7:
+            if int(choice) >= 1 and int(choice) <= 8:
                 return int(choice)
             else:
                 print('Number must be within the valid range')
@@ -95,6 +96,14 @@ def save_csv():
         f.write(content)
 
 
+def list_locations():
+    locations = []
+    for horse in horses:
+        if horse[8] not in locations:
+            print(horse[8])
+            locations.append(horse[8])
+    return locations
+
 
 
 while True:
@@ -102,7 +111,7 @@ while True:
     print('---------------------------')
     match choice:
         # stop
-        case 7:
+        case 8:
             exit()
         
         # search by name
@@ -147,7 +156,39 @@ then come back here and press enter.''')
                 input()
                 with open('additional_info.txt', 'r') as f:
                     horse[-1] = f.read().strip('\n')
-                os.remove('additional_info.txt')
+                os.remove('additional_info.txt') 
+        
+        # all horses in a location
+        case 4:
+            print('Enter the location from the options below:')
+            locations = list_locations()
+            while True:
+                location = presence_checked_input()
+                if location not in locations:
+                    print('Not one of the options!')
+                    continue
+                break
+            for horse in horses:
+                if horse[8] == location:
+                    print(f'Name: {horse[1]} Microchip: {horse[7]}')
+        
+
+        # change location
+        case 5:
+            print('Enter the name of a horse to move')
+            name = presence_checked_input()
+            print('---------------------------')
+            horse = search_for_name(name)
+            if horse == -1:
+                print(f'Unable to find horse named {name}')
+            else:
+                print(f'This horse is currently at {horse[8]}')
+                print('Enter the location from the options below (or type in a new one):')
+                locations = list_locations()
+                location = presence_checked_input()
+                location = location.upper()
+                horse[8] = location
+
 
 
     save_csv()
