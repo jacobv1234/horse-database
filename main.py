@@ -19,7 +19,7 @@ Select one:
 4) Get all horses in a given location
 5) Change the location of a horse
 6) Change a horse's dental due date
-7) Move a horse to dead_horses.csv
+7) Move a horse to removed_horses.csv
 8) Exit
 ---------------------------
 Enter the number of your choice below''')
@@ -93,6 +93,23 @@ def save_csv():
         else:
             break
     with open('horses.csv', 'w') as f:
+        f.write(content)
+
+
+def save_removed():
+    with open('removed_horses.csv','w') as horse_csv:
+        writer = csv.writer(horse_csv, lineterminator='\n')
+        writer.writerows(removed_horses)
+    content = ''
+    with open('removed_horses.csv','r') as f:
+        content = f.read()
+    content.replace('\n\n', '\n')
+    while True:
+        if content[-1] == '\n':
+            content = content[:-1]
+        else:
+            break
+    with open('removed_horses.csv', 'w') as f:
         f.write(content)
 
 
@@ -188,6 +205,43 @@ then come back here and press enter.''')
                 location = presence_checked_input()
                 location = location.upper()
                 horse[8] = location
+        
+
+        # change dental due date
+        case 6:
+            print('Enter the name of a horse to move')
+            name = presence_checked_input()
+            print('---------------------------')
+            horse = search_for_name(name)
+            if horse == -1:
+                print(f'Unable to find horse named {name}')
+            else:
+                print(f'{horse[1]} has a due date of {horse[9]}')
+                print('Enter the new date in the format DD/MM/YY')
+                date = presence_checked_input()
+                horse[9] = date
+
+
+        # move horse to removed_horses
+        case 7:
+            print('Enter the name of a horse to remove')
+            name = presence_checked_input()
+            print('---------------------------')
+            horse = search_for_name(name)
+            if horse == -1:
+                print(f'Unable to find horse named {name}')
+            else:
+                print(f'Are you sure {horse[1]} is the right horse? (y/n)')
+                decision = presence_checked_input()
+                if decision == 'y':
+                    removed_horses = []
+                    with open('removed_horses.csv') as horse_csv:
+                        reader = csv.reader(horse_csv)
+                        for row in reader:
+                            removed_horses.append(row)
+                    removed_horses.append(horse)
+                    horses.remove(horse)
+                    save_removed()
 
 
 
