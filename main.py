@@ -134,7 +134,7 @@ while True:
         # search by name
         case 1:
             print('Enter the name of the horse')
-            name = presence_checked_input()
+            name = presence_checked_input().upper()
             print('---------------------------')
             horse = search_for_name(name)
             if horse == -1:
@@ -159,7 +159,7 @@ while True:
         # edit note
         case 3:
             print('Enter the name of the horse')
-            name = presence_checked_input()
+            name = presence_checked_input().upper()
             print('---------------------------')
             horse = search_for_name(name)
             if horse == -1:
@@ -193,7 +193,7 @@ then come back here and press enter.''')
         # change location
         case 5:
             print('Enter the name of a horse to move')
-            name = presence_checked_input()
+            name = presence_checked_input().upper()
             print('---------------------------')
             horse = search_for_name(name)
             if horse == -1:
@@ -209,8 +209,8 @@ then come back here and press enter.''')
 
         # change dental due date
         case 6:
-            print('Enter the name of a horse to move')
-            name = presence_checked_input()
+            print('Enter the name of a horse to edit')
+            name = presence_checked_input().upper()
             print('---------------------------')
             horse = search_for_name(name)
             if horse == -1:
@@ -225,7 +225,7 @@ then come back here and press enter.''')
         # move horse to removed_horses
         case 7:
             print('Enter the name of a horse to remove')
-            name = presence_checked_input()
+            name = presence_checked_input().upper()
             print('---------------------------')
             horse = search_for_name(name)
             if horse == -1:
